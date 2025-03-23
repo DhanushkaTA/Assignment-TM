@@ -9,18 +9,21 @@ import {
     updateTask, getAllTaskByUserId
 } from "../controller/TaskController";
 import {getAllUsersDetails} from "../controller/UserController";
+import {restrictTo} from "../middleware/RoleVerify";
 
 const router = express.Router();
 
 router.post(
     '/',
     authorize,
+    restrictTo('admin'),
     creatTask
 )
 
 router.delete(
     '/',
     authorize,
+    restrictTo('admin'),
     deleteTask
 )
 
