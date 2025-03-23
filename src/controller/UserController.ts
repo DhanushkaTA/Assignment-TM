@@ -216,7 +216,7 @@ export const updateUser = async (
 
     try {
 
-        const { userId, email, firstName, lastName, mobileNumber, address } = req.body;
+        const { userId, email, firstName, lastName, mobileNumber, address, status } = req.body;
 
         if (!userId) {
             throw new AppError(
@@ -260,6 +260,7 @@ export const updateUser = async (
         if (lastName) user.lastName = lastName;
         if (mobileNumber) user.mobileNumber = mobileNumber;
         if (address) user.address = address;
+        if (status) user.status = status;
 
         // Save updated details in db
         await user.save();
