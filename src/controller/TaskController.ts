@@ -212,7 +212,7 @@ export const getAllTasks = async (
         if (taskName && taskName !== 'null') filters.taskName = { $regex: taskName, $options: "i" };
         if (assignUser && assignUser !== 'null') filters.assignUser = { $regex: assignUser, $options: "i" };
         if (description && description !== 'null') filters.description = { $regex: description, $options: "i" };
-        if (status && status !== 'null') filters.status = status === "true";
+        if ( status === 'true' || status === 'false' ) filters.status = status === "true";
 
 
 
@@ -409,10 +409,15 @@ export const getAllTaskByUserId = async (
 
     try {
 
-        const userId = req.query.id as string;
+        const { page, limit, taskName, userId, status, description, startDate, endDate, completeDate } = req.query;
+
+        // Pagination defaults
+        const pageNumber = parseInt(page as string) || 1;
+        const limitNumber = parseInt(limit as string) || 10;
+        const skip = (pageNumber - 1) * limitNumber;
 
         // Validate Object id
-        if (!mongoose.Types.ObjectId.isValid(userId)) {
+        if (!mongoose.Types.ObjectId.isValid(userId as string)) {
             throw new AppError(
                 'User ID is invalid! Please enter valid id!',
                 400,
@@ -420,14 +425,73 @@ export const getAllTaskByUserId = async (
             )
         }
 
+        // Create dynamic filters ----------------------------
+        let filters: any = {
+            assignUser:userId
+        };
+
+        if (taskName && taskName !== 'null') filters.taskName = { $regex: taskName, $options: "i" };
+        if (description && description !== 'null') filters.description = { $regex: description, $options: "i" };
+        if ( status === 'true' || status === 'false' ) filters.status = status === "true";
+
+
+
+        if (startDate && startDate !== 'null'){
+            const startOfDay = new Date(startDate as string);
+            // 12:00 AM
+            startOfDay.setHours(0, 0, 0, 0);
+
+            const endOfDay = new Date(startDate as string);
+            // 11:59:59 PM
+            endOfDay.setHours(23, 59, 59, 999);
+
+            filters.startDate =
+                { $gte: startOfDay, $lte: endOfDay };
+        }
+
+        if (endDate && endDate !== 'null'){
+            const startOfDay = new Date(endDate as string);
+            startOfDay.setHours(0, 0, 0, 0);
+
+            const endOfDay = new Date(endDate as string);
+            endOfDay.setHours(23, 59, 59, 999);
+
+            filters.endDate =
+                { $gte: startOfDay, $lte: endOfDay };
+        }
+
+        if (completeDate && completeDate !== 'null'){
+            const startOfDay = new Date(completeDate as string);
+            startOfDay.setHours(0, 0, 0, 0);
+
+            const endOfDay = new Date(completeDate as string);
+            endOfDay.setHours(23, 59, 59, 999);
+
+            filters.completeDate =
+                { $gte: startOfDay, $lte: endOfDay };
+        }
+
+        console.log(filters)
+
+        //-----------------------------------------------------
+
+        // Get total tasks count
+        const totalRecodes = await TaskModel.countDocuments(filters);
+        // Total pages
+        const totalPages = Math.ceil(totalRecodes / limitNumber)
+
+        // Get task recodes - as a JSON objects
         const tasks =
-            await TaskModel.find({assignUser:userId}).sort({ createdAt: -1 }).lean();
+            await TaskModel.find(filters).populate('assignUser', '_id firstName lastName').skip(skip).limit(limitNumber).sort({ createdAt: -1 }).lean();
 
         res.status(200).send(
             new CustomResponse(
                 StatusCodes.DATA_FOUND_SUCCESSFULLY,
-                'Task found successfully.',
-                tasks
+                "Tasks found successfully.",
+                tasks,
+                totalPages,
+                totalRecodes,
+                pageNumber
             )
         )
 

@@ -176,7 +176,7 @@ export const getAllUsers = async (
         if (email  && email !== 'null') filters.email = { $regex: email, $options: "i" };
         if (address  && address !== 'null') filters.address = { $regex: address, $options: "i" };
         if (role  && role !== 'null') filters.role = role;
-        if (status && status !== 'null') filters.status = status === "true";
+        if ( status === 'true' || status === 'false' ) filters.status = status === "true";
 
         console.log(filters)
 
