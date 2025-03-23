@@ -261,8 +261,8 @@ export const updateUser = async (
         if (mobileNumber) user.mobileNumber = mobileNumber;
         if (address) user.address = address;
         if (status) user.status = status;
-        if (email) user.email = status;
-        if (role) user.role = status;
+        if (email) user.email = email;
+        if (role) user.role = role;
 
         // Save updated details in db
         await user.save();
