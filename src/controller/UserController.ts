@@ -116,7 +116,7 @@ export const deleteUser = async (
         }
 
         // Validate Object id
-        if (!mongoose.Types.ObjectId.isValid(userId)) {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
             throw new AppError(
                 'User ID is invalid! Please enter valid id!',
                 400,
@@ -238,13 +238,14 @@ export const updateUser = async (
         // Find the user by email
         const user = await UserModel.findById(userId).select("-password");
 
-        if (user.role !== 'admin' && user.email !== req.tokenData.user.email){
-            throw new AppError(
-                "User not access to perform this action",
-                401,
-                StatusCodes.UNAUTHORIZED_ACCESS
-            )
-        }
+        // if (user.role === 'user' && user.email !== req.tokenData.user.email){
+        //     throw new AppError(
+        //         "User not access to perform this action",
+        //         401,
+        //         StatusCodes.UNAUTHORIZED_ACCESS
+        //     )
+        // }
+        // console.log(req.tokenData.user.email)
 
         if (!user) {
             throw new AppError(
