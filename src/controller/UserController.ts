@@ -163,7 +163,7 @@ export const getAllUsers = async (
 
         // Case-insensitive search
         if (firstName && firstName !== 'null') filters.firstName = { $regex: firstName, $options: "i" };
-        if (lastName && limitNumber !== 'null') filters.lastName = { $regex: lastName, $options: "i" };
+        if (lastName && lastName !== 'null') filters.lastName = { $regex: lastName, $options: "i" };
         if (email  && email !== 'null') filters.email = { $regex: email, $options: "i" };
         if (address  && address !== 'null') filters.address = { $regex: address, $options: "i" };
         if (role  && role !== 'null') filters.role = role;
@@ -278,7 +278,7 @@ export const getAllUsersDetails = async (
 
 
         const users = await UserModel.find({})
-            .select("_id email")
+            .select("_id email firstName lastName")
             .sort({ createdAt: -1 });
 
         res.status(200).send(

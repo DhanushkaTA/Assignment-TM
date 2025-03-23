@@ -122,6 +122,8 @@ export const newPassword = async (
         // Save updated details in db
         await user.save();
 
+        user.password='';
+
         res.status(200).send(
             new CustomResponse(
                 StatusCodes.USER_UPDATE_SUCCESSFULLY,

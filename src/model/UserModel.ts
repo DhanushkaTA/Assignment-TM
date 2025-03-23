@@ -6,7 +6,7 @@ let useSchema
     firstName: { type: String, required: true, index: true},
     lastName: { type: String, required: true, index: true},
     email: { type: String, required: true, unique: true, index: true},
-    password: { type: String, required: false},
+    password: { type: String, required: false, unique: false},
     mobileNumber: { type: String, required: true, unique: true, index: true},
     role: { type: String, required: true, enum:['admin', 'user'], index: true},
     address: { type: String, required: true, index: true},
