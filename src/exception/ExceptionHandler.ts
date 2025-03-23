@@ -19,7 +19,6 @@ export const exceptionHandler = (error:any,req:express.Request,res:express.Respo
 
         if (err.name === 'JsonWebTokenError') err = handleJWTError();
         if (err.name === 'TokenExpiredError') err = handleJWTExpiredError();
-        if (err.name === 'SequelizeValidationError') err = handleValidationError(error);
 
         sendErrorToPro(err,res);
     }else {

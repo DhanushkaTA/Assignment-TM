@@ -199,7 +199,7 @@ export const getAllTasks = async (
 
     try {
 
-        const { page, limit, taskName, assignUser, status, description, startDate, endDate, completeDate } = req.query;
+        const { page, limit, taskName, assignUser, status, description, startDate, endDate, completeDate, firstName } = req.query;
 
         // Pagination defaults
         const pageNumber = parseInt(page as string) || 1;
@@ -250,6 +250,16 @@ export const getAllTasks = async (
             filters.completeDate =
                 { $gte: startOfDay, $lte: endOfDay };
         }
+
+        if (firstName && firstName !== 'null'){
+            const userByName = await UserModel.findOne({
+                firstName: { $regex: firstName, $options: "i" }
+            }).lean();
+
+            filters.assignUser = userByName._id
+        }
+
+        console.log(filters)
 
         //-----------------------------------------------------
 
