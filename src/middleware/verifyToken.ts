@@ -34,8 +34,6 @@ export const authorize = async (req:express.Request, res:express.Response, next:
 
         const decode:any = jwt.verify(token, JWT_SECRET as Secret);
 
-        // console.log(decode.user)
-
         //find  user is exists in db
         if (!await UserModel.findOne({email:decode.user.email}).select('-password').lean()){
             throw new AppError(

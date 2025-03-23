@@ -259,8 +259,6 @@ export const getAllTasks = async (
             filters.assignUser = userByName._id
         }
 
-        console.log(filters)
-
         //-----------------------------------------------------
 
         // Get total tasks count
@@ -409,7 +407,7 @@ export const getAllTaskByUserId = async (
 
     try {
 
-        const { page, limit, taskName, userId, status, description, startDate, endDate, completeDate } = req.query;
+        const { page, limit, taskName, userId, status, description, startDate, endDate, completeDate, taskStatus } = req.query;
 
         // Pagination defaults
         const pageNumber = parseInt(page as string) || 1;
@@ -433,6 +431,7 @@ export const getAllTaskByUserId = async (
         if (taskName && taskName !== 'null') filters.taskName = { $regex: taskName, $options: "i" };
         if (description && description !== 'null') filters.description = { $regex: description, $options: "i" };
         if ( status === 'true' || status === 'false' ) filters.status = status === "true";
+        if ( taskStatus && taskStatus !== 'null' ) filters.taskStatus = taskStatus;
 
 
 
@@ -470,8 +469,6 @@ export const getAllTaskByUserId = async (
             filters.completeDate =
                 { $gte: startOfDay, $lte: endOfDay };
         }
-
-        console.log(filters)
 
         //-----------------------------------------------------
 

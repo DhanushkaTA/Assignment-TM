@@ -43,15 +43,6 @@ export const saveNewUser = async (
                 StatusCodes.DUPLICATE_ENTRY);
         }
 
-
-        // let hashedPassword = '';
-
-        // if (role === 'admin'){
-        //     // hash password
-        //     const salt = await bcrypt.genSalt(10);
-        //     hashedPassword = await bcrypt.hash(password,salt);
-        // }
-
         //save user in db
         const newUser = await UserModel.create(
             [
@@ -68,8 +59,6 @@ export const saveNewUser = async (
             ],
             {session}
         );
-
-        // console.log(newUser)
 
         await sendEmail(new EmailOptions(
             email,
@@ -178,7 +167,6 @@ export const getAllUsers = async (
         if (role  && role !== 'null') filters.role = role;
         if ( status === 'true' || status === 'false' ) filters.status = status === "true";
 
-        console.log(filters)
 
         // -----------------------------------------------------
 
@@ -237,15 +225,6 @@ export const updateUser = async (
 
         // Find the user by email
         const user = await UserModel.findById(userId).select("-password");
-
-        // if (user.role === 'user' && user.email !== req.tokenData.user.email){
-        //     throw new AppError(
-        //         "User not access to perform this action",
-        //         401,
-        //         StatusCodes.UNAUTHORIZED_ACCESS
-        //     )
-        // }
-        // console.log(req.tokenData.user.email)
 
         if (!user) {
             throw new AppError(

@@ -187,8 +187,6 @@ export const sendOtp = async (
             {session}
         );
 
-        // console.log(otp)
-
         await sendEmail(new EmailOptions(
             email,
             "OTP Code",

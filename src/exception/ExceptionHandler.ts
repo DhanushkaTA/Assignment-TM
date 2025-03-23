@@ -6,7 +6,6 @@ import { StatusCodes } from "../util/StatusCode";
 
 
 export const exceptionHandler = (error:any,req:express.Request,res:express.Response,next:express.NextFunction) => {
-    console.log('🔥🔥🔥🔥🔥🔥🔥🔥🔥');
 
     error.statusCode = error.statusCode || 500;
     error.status = error.status || 'error'
