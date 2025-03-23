@@ -162,12 +162,12 @@ export const getAllUsers = async (
         let filters: any = {};
 
         // Case-insensitive search
-        if (firstName) filters.firstName = { $regex: firstName, $options: "i" };
-        if (lastName) filters.lastName = { $regex: lastName, $options: "i" };
-        if (email) filters.email = { $regex: email, $options: "i" };
-        if (address) filters.address = { $regex: address, $options: "i" };
-        if (role) filters.role = role;
-        if (status) filters.status = status === "true";
+        if (firstName && firstName !== 'null') filters.firstName = { $regex: firstName, $options: "i" };
+        if (lastName && limitNumber !== 'null') filters.lastName = { $regex: lastName, $options: "i" };
+        if (email  && email !== 'null') filters.email = { $regex: email, $options: "i" };
+        if (address  && address !== 'null') filters.address = { $regex: address, $options: "i" };
+        if (role  && role !== 'null') filters.role = role;
+        if (status && status !== 'null') filters.status = status === "true";
 
         console.log(filters)
 
