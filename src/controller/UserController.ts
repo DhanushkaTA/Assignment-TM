@@ -290,7 +290,7 @@ export const getAllUsersDetails = async (
     try {
 
 
-        const users = await UserModel.find({})
+        const users = await UserModel.find({role:"user", status: true})
             .select("_id email firstName lastName")
             .sort({ createdAt: -1 });
 
