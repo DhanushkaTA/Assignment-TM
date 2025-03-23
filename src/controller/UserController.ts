@@ -105,18 +105,27 @@ export const deleteUser = async (
 
     try {
 
-        const email = req.query.email as string;
+        const id = req.query.id as string;
 
         // Validate details
-        if (!email){
+        if (!id){
             throw new AppError(
                 'Email is missing! Please check and try again.',
                 400,
                 StatusCodes.DATA_NOT_FOUND)
         }
 
+        // Validate Object id
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            throw new AppError(
+                'User ID is invalid! Please enter valid id!',
+                400,
+                StatusCodes.INVALID_INPUT
+            )
+        }
+
         // Find and delete user
-        const deletedUser = await UserModel.findOneAndDelete({ email });
+        const deletedUser = await UserModel.findOneAndDelete({ _id:id });
 
         if (!deletedUser) {
             throw new AppError(
