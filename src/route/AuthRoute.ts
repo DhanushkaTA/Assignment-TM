@@ -7,7 +7,7 @@ router.post('/login', loginUser)
 
 router.put('/reset-password', newPassword)
 
-router.post('/otp/req', sendOtp)
+router.get('/otp/req', sendOtp)
 
 router.post('/otp/verify', verifyOtp)
 
