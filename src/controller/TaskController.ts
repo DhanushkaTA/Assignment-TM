@@ -270,7 +270,7 @@ export const getAllTasks = async (
 
         // Get task recodes - as a JSON objects
         const tasks =
-            await TaskModel.find(filters).skip(skip).limit(limitNumber).sort({ createdAt: -1 }).lean();
+            await TaskModel.find(filters).populate('assignUser', '_id firstName lastName').skip(skip).limit(limitNumber).sort({ createdAt: -1 }).lean();
 
         res.status(200).send(
             new CustomResponse(
