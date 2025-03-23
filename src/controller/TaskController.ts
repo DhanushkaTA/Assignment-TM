@@ -425,15 +425,13 @@ export const getAllTaskByUserId = async (
 
         // Create dynamic filters ----------------------------
         let filters: any = {
-            assignUser:userId
+            assignUser:userId,
+            status:true
         };
 
         if (taskName && taskName !== 'null') filters.taskName = { $regex: taskName, $options: "i" };
         if (description && description !== 'null') filters.description = { $regex: description, $options: "i" };
-        if ( status === 'true' || status === 'false' ) filters.status = status === "true";
         if ( taskStatus && taskStatus !== 'null' ) filters.taskStatus = taskStatus;
-
-
 
         if (startDate && startDate !== 'null'){
             const startOfDay = new Date(startDate as string);
