@@ -44,13 +44,13 @@ export const saveNewUser = async (
         }
 
 
-        let hashedPassword = '';
+        // let hashedPassword = '';
 
-        if (role === 'admin'){
-            // hash password
-            const salt = await bcrypt.genSalt(10);
-            hashedPassword = await bcrypt.hash(password,salt);
-        }
+        // if (role === 'admin'){
+        //     // hash password
+        //     const salt = await bcrypt.genSalt(10);
+        //     hashedPassword = await bcrypt.hash(password,salt);
+        // }
 
         //save user in db
         const newUser = await UserModel.create(
@@ -59,7 +59,7 @@ export const saveNewUser = async (
                     firstName: firstName,
                     lastName: lastName,
                     email: email,
-                    password:hashedPassword,
+                    password:'',
                     mobileNumber: mobileNumber,
                     role: role,
                     address: address,
